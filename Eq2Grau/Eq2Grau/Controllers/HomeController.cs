@@ -22,58 +22,105 @@ namespace Eq2Grau.Controllers
         /// <returns></returns>
         public IActionResult Index(string A, string B, string C)
         {
-            // Variáveis para armazenar os coeficientes convertidos de string para double
-            double a, b, c;
+            /* ALGORITMO:
+             * 1- ler parâmetros A, B, C
+             * 2- validar se se pode fazer operações com eles
+             *    2.1- têm de ser números
+             *    2.2- A != 0
+             * 3- se posso calcular,
+             *    3.1- determinar as raízes
+             *         x=(-b +/- sqrt(b^2-4ac))/2/a
+             *         3.1.1- calcular o delta: b^2-4ac
+             *         3.1.2- se delta > 0, há 2 raízes reais distintas
+             *                              x1 e x2
+             *                se delta = 0, há 2 raízes reais iguais
+             *                              x1=x2
+             *                se delta < 0, há duas raízes complexas conjugadas
+             *                              x1 = -b/(2a) + sqrt(-delta)/(2a) i
+             *                              x2 = -b/(2a) - sqrt(-delta)/(2a) i
+             *   3.2- enviar a resposta para o cliente
+             * se não posso calcular (else)
+             *    enviar mensagem de erro para o cliente (browser)
+             */
 
+            // vars. auxiliares
+            double auxA = 0, auxB = 0, auxC = 0;
+            ViewBag.mensagem = "";
+
+            // 1.
+            if (string.IsNullOrWhiteSpace(A) || string.IsNullOrWhiteSpace(B) || string.IsNullOrWhiteSpace(C))
+            {
+                // enviar mensagem para o utilizador
+
+                ViewBag.mensagem = "Insira todos os valores";
+                // devolver controlo à View
+                return View();
+            }
+
+            // 1.
             // Tente converter os coeficientes de string para double
-            if (!double.TryParse(A, out a) || !double.TryParse(B, out b) || !double.TryParse(C, out c))
+            if (!double.TryParse(A, out auxA) || !double.TryParse(B, out auxB) || !double.TryParse(C, out auxC))
             {
                 // Se a conversão falhar, envie uma mensagem de erro para a view
-                ViewBag.ErrorMessage = "Os coeficientes devem ser números válidos.";
+                ViewBag.mensagem = "Os coeficientes devem ser números válidos.";
                 return View();
             }
 
-            // Verifique se a é diferente de zero para garantir que seja uma equação de segundo grau válida
-            if (a == 0)
+
+            // 2.
+            if (auxA == 0)
             {
-                // Se 'a' for zero, não é uma equação de segundo grau válida, envie uma mensagem de erro para a view
-                ViewBag.ErrorMessage = "O coeficiente 'a' deve ser diferente de zero para uma equação de segundo grau.";
+                // o A é ZERO.
+                // enviar mensagem para o utilizador
+                ViewBag.mensagem = "O coeficiente 'a' deve ser diferente de zero para uma equação de segundo grau.";
+
+                // devolver controlo à View
                 return View();
             }
 
-            // Calcula o discriminante (delta)
-            double delta = b * b - 4 * a * c;
 
-            // Variáveis para armazenar as raízes
-            double x1, x2;
-
-            // Verifica o valor do discriminante para determinar o tipo de raízes
+            // 3.
+            double delta = Math.Pow(auxB, 2) - 4 * auxC;
+            // 3.1
             if (delta > 0)
             {
-                // Duas raízes reais e distintas
-                x1 = (-b + Math.Sqrt(delta)) / (2 * a);
-                x2 = (-b - Math.Sqrt(delta)) / (2 * a);
-            }
-            else if (delta == 0)
-            {
-                // Duas raízes reais e iguais
-                x1 = x2 = -b / (2 * a);
-            }
-            else
-            {
-                // Duas raízes complexas conjugadas
-                double realPart = -b / (2 * a);
-                double imaginaryPart = Math.Sqrt(-delta) / (2 * a);
-                // Construindo a parte real e imaginária
-                string x1Complex = $"{realPart} + {imaginaryPart}i";
-                string x2Complex = $"{realPart} - {imaginaryPart}i";
-                // Enviando as raízes complexas para a view
-                ViewBag.ResultMessage = $"As raízes são complexas: {x1Complex} e {x2Complex}";
+                string x1 = Math.Round((-auxB + Math.Sqrt(delta)) / 2 / auxA, 2) + "";
+                string x2 = Math.Round((-auxB - Math.Sqrt(delta)) / 2 / auxA, 2) + "";
+                // enviar mensagem para o utilizador
+                ViewBag.mensagem = "A equação tem duas raizes mais distintas";
+                ViewBag.x1 = x1;
+                ViewBag.x2 = x2;
+
+                // devolver controlo à View
                 return View();
             }
 
-            // Enviar as raízes reais para a view
-            ViewBag.ResultMessage = $"As raízes reais são: x1 = {x1}, x2 = {x2}";
+            if (delta == 0)
+            {
+                string x = Math.Round(-auxB / 2 / auxA, 2) + "";
+
+                // enviar mensagem para o utilizador
+
+                ViewBag.mensagem = "A equação tem duas raizes mais distintas";
+                ViewBag.x1 = x;
+                // devolver controlo à View
+                return View();
+            }
+
+            if (delta < 0)
+            {
+                string x1 = Math.Round((-auxB) / 2 / auxA, 2) + " + " + Math.Round(Math.Sqrt(-delta) / 2 / auxA, 2) + " i";
+                string x2 = Math.Round((-auxB) / 2 / auxA, 2) + " - " + Math.Round(Math.Sqrt(-delta) / 2 / auxA, 2) + " i";
+                // enviar mensagem para o utilizador
+                ViewBag.mensagem = "A equação tem duas raizes mais distintas";
+                ViewBag.x1 = x1;
+                ViewBag.x2 = x2;
+
+                // devolver controlo à View
+                return View();
+            }
+            // se chegar aqui, alguma coisa correu muito mal...
+            // devolver controlo à View
             return View();
         }
 

@@ -1,11 +1,10 @@
-﻿@{
-    ViewData["Title"] = "Bem Vindo";
+﻿﻿@{
+    ViewData["Title"] = "Bem vindo";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Equação de 2ºGrau</h1>
-    <h4>Determinação das raizes de uma equação de 2º Grau</h4>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Equação do 2º Grau</h1>
+    <h4>Determinação das raízes de uma equação do 2º grau.</h4>
 </div>
 
 <!-- Este é um comentário que vai ser enviado para o Browser -->
@@ -14,17 +13,25 @@
     <div>
         <p>
             Escreva, por favor, os coeficientes da equação:<br />
-            @*
-                Esta é uma linha de comentário do RAZOR 
+            @* Esta é uma linha de comentário do RAZOR
+            só é visível no Visual Studio
 
-                Nota:
-                id->Identificação do objeto a ser lida no JavaScript(Cliente)
-                name->Identificação do objeto a ser lida pelo servidor 
+            Nota: Não esquecer
+            id -> identificação do objeto a ser lida no javascript (cliente)
+            name -> identificação do objeto a ser lida no Servidor
             *@
-            A: <input type="text" name="A"/><br />
-            B: <input type="text" name="B"/><br />
-            C: <input type="text" name="C"/><br />
+            A: <input type="text" name="A" /><br />
+            B: <input type="text" name="B" /><br />
+            C: <input type="text" name="C" /><br />
             <input type="submit" value="Calcular" />
         </p>
     </div>
 </form>
+
+<div>
+    &nbsp;<br />
+    @*Vamos recuperar as mensagens enviadas pelo controller*@
+    @ViewBag.mensagem<br />
+    @ViewBag.x1<br />
+    @ViewBag.x2
+</div>
