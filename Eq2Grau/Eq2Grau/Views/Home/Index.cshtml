@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Bem Vindo";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Equação de 2ºGrau</h1>
+    <h4>Determinação das raizes de uma equação de 2º Grau</h4>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<!-- Este é um comentário que vai ser enviado para o Browser -->
+
+<form>
+    <div>
+        <p>
+            Escreva, por favor, os coeficientes da equação:<br />
+            @*
+                Esta é uma linha de comentário do RAZOR 
+
+                Nota:
+                id->Identificação do objeto a ser lida no JavaScript(Cliente)
+                name->Identificação do objeto a ser lida pelo servidor 
+            *@
+            A: <input type="text" name="A"/><br />
+            B: <input type="text" name="B"/><br />
+            C: <input type="text" name="C"/><br />
+            <input type="submit" value="Calcular" />
+        </p>
+    </div>
+</form>
