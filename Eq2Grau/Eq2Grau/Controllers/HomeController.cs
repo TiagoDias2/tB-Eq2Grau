@@ -66,7 +66,7 @@ namespace Eq2Grau.Controllers
                 return View();
             }
 
-
+            //4
             // 2.
             if (auxA == 0)
             {
