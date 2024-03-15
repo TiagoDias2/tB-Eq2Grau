@@ -58,7 +58,7 @@ namespace Eq2Grau.Controllers
             }
 
             // 1.
-            // Tente converter os coeficientes de string para doubl
+            // Tente converter os coeficientes de string para double
             if (!double.TryParse(A, out auxA) || !double.TryParse(B, out auxB) || !double.TryParse(C, out auxC))
             {
                 // Se a conversão falhar, envie uma mensagem de erro para a view
